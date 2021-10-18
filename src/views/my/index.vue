@@ -1,7 +1,7 @@
 <template>
   <div class="my-container">
     <!-- 已登录头部 -->
-    <div v-if="true" class="header user-info">
+    <div v-if="show" class="header user-info">
       <div class="base-info">
         <div class="left">
           <van-image
@@ -62,7 +62,7 @@
     <van-cell title="消息通知" is-link />
     <van-cell class="mb-9" title="小智同学" is-link />
     <van-cell
-      v-if="user"
+      v-if="show"
       class="logout-cell"
       clickable
       title="退出登录"
@@ -81,7 +81,8 @@ export default {
   props: {},
   data () {
     return {
-      userInfo: {} // 用户信息
+      userInfo: {}, // 用户信息
+      show: true
     }
   },
   computed: {
@@ -102,11 +103,10 @@ export default {
       this.$dialog.confirm({
         title: '确认退出吗？'
       }).then(() => {
-        // on confirm
         // 确认退出：清除登录状态（容器中的 user + 本地存储中的 user）
         this.$store.commit('setUser', null)
+        this.show = false
       }).catch(() => {
-        // on cancel
         console.log('取消执行这里')
       })
     },
